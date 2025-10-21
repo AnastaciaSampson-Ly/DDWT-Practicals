@@ -8,7 +8,7 @@
 <h2 class="text-center bg-light py-1 mt-2">All Products</h2>
 
 <form method="post" action="/Home/Index" class="row">
-    <div class="col-3"><input type="text" name="searchText" class="form-control" placeholder="Search Products" value="@Request.Form["searchTexr"]"/></div>
+    <div class="col-3"><input type="text" name="searchText" class="form-control" placeholder="Search Products" value="@Request.Form["searchText"]"/></div>
     <div class="col-2"><button type="submit" class="btn btn-primary">Search</button></div>
 </form>
 
@@ -23,7 +23,7 @@
                 <h5 class="card-title">@row.itemname;</h5>
                 <p class="card-text">@row.itemDescription</p>
                 <p class="font-italic">@row.itemCost.ToString("C")</p>
-                <a href="/Home/Detials?id=@row.itemID" class="btn btn-secondary">View Detail</a>
+                <a href="/Home/Details?id=@row.itemID" class="btn btn-secondary">View Detail</a>
             </div>
         </div>
 

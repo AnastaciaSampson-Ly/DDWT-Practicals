@@ -1,12 +1,35 @@
-﻿<h2 class="text-center bg-light py-1 mt-2">Product Detail</h2>
+﻿@using WebMatrix.Data
 
-<div class="row justify-content-center col-10">
-    <div class="card" style="width: 18rem;">
-        <img src="..." class="card-img-top" alt="...">
-        <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+@{
+    var db = Database.Open("AmazonOrders");
+    var id = Request.QueryString["id"];
+    var sql = $"select * from items join itemcategories on items.categoryID = itemcategories.categoryID where items.itemID = {id}";
+    var data = db.QuerySingle(sql, id);
+}
+
+<h2 class="text-center bg-light py-1 mt-2">Product Detail</h2>
+
+
+@if (data != null)
+    {
+    <div class="row justify-content-center">
+        <div class="card form-control" style="width: 40rem;">
+            <div class="card-body">
+                <h5 class="card-title">@data.itemname</h5>
+                <p class="card-text">@data.itemDescription</p>
+                <p class="font-italic">Price: @data.itemCost.ToString("C")</p>
+                <p class="font-italic">Category: @data.categoryName</p>
+                <img src="@data.itemImage" class="card-img-top" alt="@data.itemName image">
+            </div>
         </div>
     </div>
-</div>
+
+}
+
+else
+{
+<h2 class="text-danger text-center">Ooops - That product was not found!</h2>
+
+}
+
+
