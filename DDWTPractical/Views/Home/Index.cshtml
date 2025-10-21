@@ -2,8 +2,8 @@
 
 @{
     var db = Database.Open("AmazonOrders");
-    var sql = "select * from items order by itemName asc";
-    var data = db.Query(sql); 
+    var sql = "select * from items where itemName like concat(@0, '%')";
+    var data = db.Query(sql, Request.Form["searchText"]); 
 }
 <h2 class="text-center bg-light py-1 mt-2">All Products</h2>
 
