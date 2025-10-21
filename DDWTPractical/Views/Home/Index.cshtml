@@ -8,11 +8,12 @@
 <h2 class="text-center bg-light py-1 mt-2">All Products</h2>
 
 <form method="post" action="/Home/Index" class="row">
-    <div class="col-3"><input type="text" name="searchText" class="form-control" placeholder="Search Products"/></div>
+    <div class="col-3"><input type="text" name="searchText" class="form-control" placeholder="Search Products" value="@Request.Form["searchTexr"]"/></div>
     <div class="col-2"><button type="submit" class="btn btn-primary">Search</button></div>
 </form>
 
-
+@if (data.Count()>0)
+{
 <div class="row justify-content-center">
     @foreach (var row in data)
     {
@@ -26,9 +27,15 @@
             </div>
         </div>
 
-        
+
 
     }
 </div>
+}
+
+else
+{
+        <h2 class="text-danger text-center">Oops! No matching products returned...</h2>
+}
 
 
