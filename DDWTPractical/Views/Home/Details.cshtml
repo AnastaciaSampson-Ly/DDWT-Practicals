@@ -3,7 +3,7 @@
 @{
     var db = Database.Open("AmazonOrders");
     var id = Request.QueryString["id"];
-    var sql = "select * from items as I where itemID = @0";
+    var sql = $"select * from items join itemcategories on items.categoryID = itemcategories.categoryID where items.itemID = @0";
     var data = db.QuerySingle(sql, id);
 }
 
