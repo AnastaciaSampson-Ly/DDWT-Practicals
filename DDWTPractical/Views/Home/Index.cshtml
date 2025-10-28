@@ -5,7 +5,7 @@
     var sql = "select * from items where itemName like concat(@0, '%')";
     var data = db.Query(sql, Request.Form["searchText"]); 
 }
-<h2 class="text-center bg-light py-1 mt-2">Product Management</h2>
+<h2 class="text-center bg-light py-1 mt-2">All Products</h2>
 
 <form method="post" action="/Home/Index" class="row">
     <div class="col-3"><input type="text" name="searchText" class="form-control" placeholder="Search Products" value="@Request.Form["searchText"]"/></div>

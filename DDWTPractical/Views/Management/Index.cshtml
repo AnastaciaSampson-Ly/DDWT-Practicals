@@ -1,1 +1,55 @@
-﻿<h2 class="text-center">Index</h2> 
+﻿@using WebMatrix.Data
+
+@{
+    var db = Database.Open("AmazonOrders");
+    var sql = "select * from items join itemcategories on items.categoryID = itemcategories.categoryID order by itemName ASC";
+    var data = db.Query(sql, Request.Form["searchText"]);
+}
+<h2 class="text-center bg-light py-1 mt-2">Product Management</h2>
+
+<form method="post" action="/Management/Index">
+    <div class="row">
+        <div class="col-3"><input type="text" name="searchText" class="form-control" placeholder="Search Products" value="@Request.Form["searchText"]" /></div>
+        <div class="col-3">
+            <button type="submit" class="btn btn-secondary">Search</button>
+            <a href="/Management/Create" class="btn btn-primary">New Item</a>
+        </div>
+    </div>
+    
+</form>
+
+@if (data.Count() > 0)
+{
+    <div class="row justify-content-center">
+       <table class="table table-striped">
+           <thead>
+               <tr>
+                   <th scope="col">Item #</th>
+                   <th scope="col">Name</th>
+                   <th scope="col">Category</th>
+                   <th scope="col">Cost ($)</th>
+                   <th scope="col">Action</th>
+               </tr>
+           </thead>
+           @foreach (var row in data)
+               {
+               <tbody>
+                   <tr>
+                       <th scope="col">@row.itemid</th>
+                       <th scope="col">@row.itemname</th>
+                       <th scope="col">@row.categoryname</th>
+                       <th scope="col">@row.itemcost</th>
+                       <th scope="col"></th>
+                   </tr>
+
+               </tbody>
+               }
+           </table>
+    </div>
+}
+
+else
+{
+    <h2 class="text-danger text-center">Oops! No matching products returned...</h2>
+}
+
