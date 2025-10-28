@@ -1,4 +1,27 @@
-﻿<h2 class="text-center bg-light py-1 mt-2">Create Product</h2>
+﻿@using WebMatrix.Data
+
+@{
+    var db = Database.Open("AmazonOrders");
+
+    var catSql = "select subCat.categoryID, CONCAT(pCat.categoryName, ' - ', subCat.categoryName) AS categoryName" + "FROM ItemCategories AS subCat" + "JOIN ItemCategories AS pCat" + "ON subCat parentCategoryID = pCat categoryID" + "ORDER BY pcat.categoryName, subCat.categoryName";
+    var catData = db.Query(catSql);
+
+    if (IsPost)
+    {
+        var sql = "Insert into Items (itemName, itemDescription, itemCost, itemImage, categoryID)" + "values (@0, @1, @2, @3, @4)";
+        var data = db.Execute(sql, Request.Form["itemName"], Request.Form["itemDescription"], Request.Form["itemCost"], Request.Form["itemImage"], Request.Form["categoryID"]);
+    }
+
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <p>Record Updated</p>
+
+    </div>
+
+
+}
+
+
+<h2 class="text-center bg-light py-1 mt-2">Create Product</h2>
 
 <form method="post" action="/Management/Create">
 
@@ -10,16 +33,14 @@
         </div>
         <div class="col-3 row pt-3">
             <p col-3>Category</p>
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" aria-label="Text input with dropdown button">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button>
-                <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="#">Action</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                    <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Separated link</a></li>
-                </ul>
+            <div class="row form-group">
+                <div class="col-3">
+                    <label for="categorydrop">Category</label>
+                    <select id="categorydrop" name="categoryID" required class="form-control">
+                        <option value="">Select...</option>
+                        @foreach (var row in )
+                    </select>
+                </div>
             </div>
 
         </div>
@@ -27,7 +48,7 @@
             <p>Unit Cost ($)</p>
             <div class="input-group mb-3 col-3">
                 <input type="text" class="col-3 form-control" placeholder="0.00" aria-label="Amount (to the nearest dollar)">
-                <span class="input-group-text">.00</span>
+                <span class="input-group-text" min="1" max="999999.99">.00</span>
             </div>
 
         </div>
