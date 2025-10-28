@@ -1,1 +1,52 @@
-﻿<h2 class="text-center">Create</h2>
+﻿<h2 class="text-center bg-light py-1 mt-2">Create Product</h2>
+
+<form method="post" action="/Management/Create">
+
+    <p>Item # [Auto]</p>
+    <div class="justify-content-center">
+        <div class="row">
+            <p class="col-7" Name</p>
+            <input type="text" class="col-7 form-control" placeholder="Product Name">
+        </div>
+        <div class="col-3 row pt-3">
+            <p col-3>Category</p>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" aria-label="Text input with dropdown button">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">Separated link</a></li>
+                </ul>
+            </div>
+
+        </div>
+        <div class="col-3 row">
+            <p>Unit Cost ($)</p>
+            <div class="input-group mb-3 col-3">
+                <input type="text" class="col-3 form-control" placeholder="0.00" aria-label="Amount (to the nearest dollar)">
+                <span class="input-group-text">.00</span>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <p>Description</p>
+            <textarea class="form-control" placeholder="Product Description..."></textarea>
+        </div>
+        <div class="pt-3 row">
+            <p>Image</p>
+            <input type="text" class="form-control" placeholder="Image URL">
+        </div>
+
+
+    </div>
+    <div class="row pt-3 justify-content-end">
+        <button type="button" class="btn btn-success col-1">Save</button>
+        <button type="button" class="btn btn-danger col-1">Clear</button>
+    </div>
+
+
+</form>
