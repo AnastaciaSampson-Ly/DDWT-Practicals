@@ -2,7 +2,23 @@
 
 @{
     var db = Database.Open("AmazonOrders");
-    var sql = "select * from items join itemcategories on items.categoryID = itemcategories.categoryID order by itemName ASC";
+    var sql = "select * from items join itemcategories on items.categoryID = itemcategories.categoryID where itemName like concat(@0, '%') order by itemName ASC";
+
+    if (IsPost && Request.Form["delete"] != null)
+    {
+        var deleteQueryString = "delete from Items where itemID = @0";
+        db.QuerySingle(deleteQueryString, Request.Form["delete"]);
+
+        //    try
+        //    {
+
+        //    }
+        //    catch
+        //{
+
+        //}
+    }
+
     var data = db.Query(sql, Request.Form["searchText"]);
 }
 <h2 class="text-center bg-light py-1 mt-2">Product Management</h2>
@@ -21,7 +37,7 @@
 @if (data.Count() > 0)
 {
     <div class="row justify-content-center">
-       <table class="table table-striped">
+       <table class="table">
            <thead>
                <tr>
                    <th scope="col">Item #</th>
@@ -39,7 +55,9 @@
                        <th scope="col">@row.itemname</th>
                        <th scope="col">@row.categoryname</th>
                        <th scope="col">@row.itemcost</th>
-                       <th scope="col"></th>
+                       <th scope="col"><a href="/Management/Edit?id=@row.itemid" class="btn btn-outline-primary">Edit</a>
+                       <button value="@row.itemID" name="delete" class="btn btn-outline-danger m-2">Delete</button>
+                       </th>
                    </tr>
 
                </tbody>
