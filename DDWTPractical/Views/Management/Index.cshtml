@@ -11,6 +11,9 @@
         try
         {
             db.QuerySingle(deleteQueryString, Request.Form["delete"]);
+            <div class="alert alert-success" role="alert">
+                Entry was deleted.
+            </div>
         }
         catch
         {
