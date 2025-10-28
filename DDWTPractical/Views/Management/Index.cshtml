@@ -7,16 +7,17 @@
     if (IsPost && Request.Form["delete"] != null)
     {
         var deleteQueryString = "delete from Items where itemID = @0";
-        db.QuerySingle(deleteQueryString, Request.Form["delete"]);
 
-        //    try
-        //    {
-
-        //    }
-        //    catch
-        //{
-
-        //}
+        try
+        {
+            db.QuerySingle(deleteQueryString, Request.Form["delete"]);
+        }
+        catch
+        {
+            <div class="alert alert-danger" role="alert">
+                Entry could not be deleted.
+            </div>
+        }
     }
 
     var data = db.Query(sql, Request.Form["searchText"]);
@@ -31,43 +32,45 @@
             <a href="/Management/Create" class="btn btn-primary">New Item</a>
         </div>
     </div>
-    
+
+
+
+    @if (data.Count() > 0)
+    {
+        <div class="row justify-content-center">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Item #</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Cost ($)</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                @foreach (var row in data)
+                {
+                    <tbody>
+                        <tr>
+                            <th scope="col">@row.itemid</th>
+                            <th scope="col">@row.itemname</th>
+                            <th scope="col">@row.categoryname</th>
+                            <th scope="col">@row.itemcost</th>
+                            <th scope="col">
+                                <a href="/Management/Edit?id=@row.itemid" class="btn btn-outline-primary">Edit</a>
+                                <button value="@row.itemID" name="delete" class="btn btn-outline-danger m-2">Delete</button>
+                            </th>
+                        </tr>
+
+                    </tbody>
+                }
+            </table>
+        </div>
+    }
+
+    else
+    {
+        <h2 class="text-danger text-center">Oops! No matching products returned...</h2>
+    }
+
 </form>
-
-@if (data.Count() > 0)
-{
-    <div class="row justify-content-center">
-       <table class="table">
-           <thead>
-               <tr>
-                   <th scope="col">Item #</th>
-                   <th scope="col">Name</th>
-                   <th scope="col">Category</th>
-                   <th scope="col">Cost ($)</th>
-                   <th scope="col">Action</th>
-               </tr>
-           </thead>
-           @foreach (var row in data)
-               {
-               <tbody>
-                   <tr>
-                       <th scope="col">@row.itemid</th>
-                       <th scope="col">@row.itemname</th>
-                       <th scope="col">@row.categoryname</th>
-                       <th scope="col">@row.itemcost</th>
-                       <th scope="col"><a href="/Management/Edit?id=@row.itemid" class="btn btn-outline-primary">Edit</a>
-                       <button value="@row.itemID" name="delete" class="btn btn-outline-danger m-2">Delete</button>
-                       </th>
-                   </tr>
-
-               </tbody>
-               }
-           </table>
-    </div>
-}
-
-else
-{
-    <h2 class="text-danger text-center">Oops! No matching products returned...</h2>
-}
-
