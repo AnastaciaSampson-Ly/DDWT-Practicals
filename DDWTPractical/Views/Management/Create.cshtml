@@ -3,71 +3,88 @@
 @{
     var db = Database.Open("AmazonOrders");
 
-    var catSql = "select subCat.categoryID, CONCAT(pCat.categoryName, ' - ', subCat.categoryName) AS categoryName" + "FROM ItemCategories AS subCat" + "JOIN ItemCategories AS pCat" + "ON subCat parentCategoryID = pCat categoryID" + "ORDER BY pcat.categoryName, subCat.categoryName";
+    var catSql = "select subCat.categoryID, CONCAT(pCat.categoryName, ' - ', subCat.categoryName) AS categoryName FROM ItemCategories AS subCat JOIN ItemCategories AS pCat ON subCat.parentCategoryID = pCat.categoryID ORDER BY pcat.categoryName, subCat.categoryName";
     var catData = db.Query(catSql);
 
     if (IsPost)
     {
-        var sql = "Insert into Items (itemName, itemDescription, itemCost, itemImage, categoryID)" + "values (@0, @1, @2, @3, @4)";
-        var data = db.Execute(sql, Request.Form["itemName"], Request.Form["itemDescription"], Request.Form["itemCost"], Request.Form["itemImage"], Request.Form["categoryID"]);
+        try
+        {
+            var sql = "Insert into Items (itemName, itemDescription, itemCost, itemImage, categoryID)" + "values (@0, @1, @2, @3, @4)";
+            var data = db.Execute(sql, Request.Form["itemName"], Request.Form["itemDescription"], Request.Form["itemCost"], Request.Form["itemImage"], Request.Form["categoryID"]);
+
+
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <p>Record Updated</p>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+
+        }
+        catch {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <p>Update Error! The record was not updated.</p>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+
+
+            }
+        }
+        
+            var itemSql = "select * from Items where itemID = @0";
+            var item = db.Query(itemSql, Request.QueryString["id"]);
+        
+
     }
 
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <p>Record Updated</p>
 
-    </div>
+    <h2 class="text-center bg-light py-1 mt-2">Create Product</h2>
 
+    <form method="post" action="/Management/Create">
 
-}
+        <p>Item # [Auto]</p>
+        <div class="justify-content-center">
+            <div class="row">
+                <label class="col-7"> Name</label>
+                <input type="text" name="itemName" class="col-7 form-control" placeholder="Product Name">
+            </div>
+           
+                    <div class="col-3">
+                        <label class="pt-3" for="categorydrop">Category</label>
+                        <select id="categorydrop" name="categoryID" required class="form-control">
+                            <option value="">Select...</option>
+                            @foreach (var row in catData)
+                                {
+                                    <option value="@row.categoryID">@row.categoryName</option>
+                                    }
+            </select>
+                        </div>
+                    </div>
 
+                
+                <div class="col-3 row">
+                    <label class="pt-3">Unit Cost ($)</label>
+                    <div class="input-group mb-3 col-3">
+                        <input type="text" class="col-3 form-control" name="itemCost" placeholder="0.00" aria-label="Amount (to the nearest dollar)">
+                        <span class="input-group-text" min="1" max="999999.99">.00</span>
+                    </div>
 
-<h2 class="text-center bg-light py-1 mt-2">Create Product</h2>
-
-<form method="post" action="/Management/Create">
-
-    <p>Item # [Auto]</p>
-    <div class="justify-content-center">
-        <div class="row">
-            <p class="col-7" Name</p>
-            <input type="text" class="col-7 form-control" placeholder="Product Name">
-        </div>
-        <div class="col-3 row pt-3">
-            <p col-3>Category</p>
-            <div class="row form-group">
-                <div class="col-3">
-                    <label for="categorydrop">Category</label>
-                    <select id="categorydrop" name="categoryID" required class="form-control">
-                        <option value="">Select...</option>
-                        @foreach (var row in )
-                    </select>
                 </div>
+
+                <div class="row">
+                    <p>Description</p>
+                    <textarea class="form-control" name="itemDescription" placeholder="Product Description..."></textarea>
+                </div>
+                <div class="pt-3 row">
+                    <p>Image</p>
+                    <input type="text" class="form-control" name="itemImage" placeholder="Image URL">
+                </div>
+
+
+            
+            <div class="row pt-3 justify-content-end">
+                <button type="submit" class="btn btn-success col-1">Save</button>
+                <button type="submit" class="btn btn-danger col-1">Clear</button>
             </div>
 
-        </div>
-        <div class="col-3 row">
-            <p>Unit Cost ($)</p>
-            <div class="input-group mb-3 col-3">
-                <input type="text" class="col-3 form-control" placeholder="0.00" aria-label="Amount (to the nearest dollar)">
-                <span class="input-group-text" min="1" max="999999.99">.00</span>
-            </div>
 
-        </div>
-
-        <div class="row">
-            <p>Description</p>
-            <textarea class="form-control" placeholder="Product Description..."></textarea>
-        </div>
-        <div class="pt-3 row">
-            <p>Image</p>
-            <input type="text" class="form-control" placeholder="Image URL">
-        </div>
-
-
-    </div>
-    <div class="row pt-3 justify-content-end">
-        <button type="button" class="btn btn-success col-1">Save</button>
-        <button type="button" class="btn btn-danger col-1">Clear</button>
-    </div>
-
-
-</form>
+        </form>
