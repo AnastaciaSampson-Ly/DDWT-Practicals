@@ -3,16 +3,16 @@
 @{
     var db = Database.Open("AmazonOrders");
 
-    var catSql = "select subCat.categoryID, CONCAT(pCat.categoryName, ' - ', subCat.categoryName) AS categoryName FROM ItemCategories AS subCat JOIN ItemCategories AS pCat ON subCat.parentCategoryID = pCat.categoryID ORDER BY pcat.categoryName, subCat.categoryName";
+    var catSql = "select subCat.categoryID, CONCAT(pCat.categoryName, ' - ', subCat.categoryName) AS categoryName FROM ItemCategories AS subCat JOIN ItemCategories AS pCat ON subCat.parentCategoryID = pCat.categoryID ORDER BY pcat.categoryName, subCat.categoryName ";
     var catData = db.Query(catSql);
 
     if (IsPost)
     {
         try
         {
-            var sql = "Insert into Items (itemName, itemDescription, itemCost, itemImage, categoryID)" + "values (@0, @1, @2, @3, @4)";
-            var data = db.Execute(sql, Request.Form["itemName"], Request.Form["itemDescription"], Request.Form["itemCost"], Request.Form["itemImage"], Request.Form["categoryID"]);
-
+            var sql = "Insert into Items (itemName, itemDescription, itemCost, itemImage, categoryID)" + "values (@0, @1, @2, @3, @4) ; SELECT SCOPE_IDENTITY()";
+            var data = db.QueryValue(sql, Request.Form["itemName"], Request.Form["itemDescription"], Request.Form["itemCost"], Request.Form["itemImage"], Request.Form["categoryID"]);
+            Response.Redirect("/Management/Edit?id=" + data);
 
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <p>Record Updated</p>
